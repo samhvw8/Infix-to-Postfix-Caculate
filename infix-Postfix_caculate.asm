@@ -49,17 +49,17 @@ while:
 	
 		
 	
-	beq $t1, $s2, addTostack # '+'
+	beq $t1, $s2, operator # '+'
 	nop
-	beq $t1, $s3, addTostack # '-'
+	beq $t1, $s3, operator # '-'
 	nop
-	beq $t1, $s4, addTostack # '*'
+	beq $t1, $s4, operator # '*'
 	nop
-	beq $t1, $s5, addTostack # '/'
+	beq $t1, $s5, operator # '/'
 	nop
-	beq $t1, 10, notAddtoStack # '\n'
+	beq $t1, 10, n_operator # '\n'
 	nop
-	beq $t1, 32, notAddtoStack # ' '
+	beq $t1, 32, n_operator # ' '
 	nop
 	beq $t1, $zero, endWhile
 	nop
@@ -75,7 +75,7 @@ while:
 
 	
 	jal check_number
-	beq $v0, 1, notAddtoStack
+	beq $v0, 1, n_operator
 	nop
 	
 	add_space:
@@ -83,10 +83,10 @@ while:
 	sb $t1, 1($t5)
 	addi $t7, $t7, 1
 	
-	j notAddtoStack
+	j n_operator
 	nop
 	
-	addTostack:
+	operator:
 	# add to stack ...
 		
 	beq $s7, -1, pushToStack
@@ -148,7 +148,7 @@ compare_precedence:
 	sb $t2, 0($t5)
 	
 	#addi $s7, $s7, -1  # scounter = scounter - 1
-	j addTostack
+	j operator
 	nop
 	
 ################	
@@ -179,7 +179,7 @@ pushToStack:
 	add $t6, $t6, $s7
 	sb $t1, 0($t6)	
 	
-	notAddtoStack:	
+	n_operator:	
 	j while	
 	nop
 	
