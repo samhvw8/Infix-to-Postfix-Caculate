@@ -5,11 +5,11 @@
 infix: .space 256
 postfix: .space 256
 stack: .space 256
-prompt:	.asciiz "Enter String contain infix expression \n(note) number is positive:"
+prompt:	.asciiz "Enter String contain infix expression :"
 newLine: .asciiz "\n"
-prompt_postfix: .asciiz "Postfix (converted): "
-prompt_result: .asciiz "Result : "
-prompt_infix: .asciiz "Input Infix is: "
+prompt_postfix: .asciiz "Postfix is: "
+prompt_result: .asciiz "Result is: "
+prompt_infix: .asciiz "Infix is: "
 
 # get infix
 .text
@@ -49,19 +49,19 @@ while:
 	
 		
 	
-	beq $t1, $s2, add_to_stack # '+'
+	beq $t1, $s2, addTostack # '+'
 	nop
-	beq $t1, $s3, add_to_stack # '-'
+	beq $t1, $s3, addTostack # '-'
 	nop
-	beq $t1, $s4, add_to_stack # '*'
+	beq $t1, $s4, addTostack # '*'
 	nop
-	beq $t1, $s5, add_to_stack # '/'
+	beq $t1, $s5, addTostack # '/'
 	nop
-	beq $t1, 10, not_add_to_stack # '\n'
+	beq $t1, 10, notAddtoStack # '\n'
 	nop
-	beq $t1, 32, not_add_to_stack # ' '
+	beq $t1, 32, notAddtoStack # ' '
 	nop
-	beq $t1, $zero, end_while
+	beq $t1, $zero, endWhile
 	nop
 	
 	# push number to postfix
@@ -75,7 +75,7 @@ while:
 
 	
 	jal check_number
-	beq $v0, 1, not_add_to_stack
+	beq $v0, 1, notAddtoStack
 	nop
 	
 	add_space:
@@ -83,10 +83,10 @@ while:
 	sb $t1, 1($t5)
 	addi $t7, $t7, 1
 	
-	j not_add_to_stack
+	j notAddtoStack
 	nop
 	
-	add_to_stack:
+	addTostack:
 	# add to stack ...
 		
 	beq $s7, -1, pushToStack
@@ -148,7 +148,7 @@ compare_precedence:
 	sb $t2, 0($t5)
 	
 	#addi $s7, $s7, -1  # scounter = scounter - 1
-	j add_to_stack
+	j addTostack
 	nop
 	
 ################	
@@ -179,12 +179,12 @@ pushToStack:
 	add $t6, $t6, $s7
 	sb $t1, 0($t6)	
 	
-	not_add_to_stack:	
+	notAddtoStack:	
 	j while	
 	nop
 	
 #######################
-end_while:
+endWhile:
 	
 	addi $s1, $zero, 32
 	add $t7, $t7, 1
@@ -192,7 +192,7 @@ end_while:
 	la $t6, stack
 	add $t6, $t6, $s7
 	
-pop_all_stack:
+popallstack:
 
 	lb $t2, 0($t6) # t2 = value of stack[counter]
 	beq $t2, 0, endPostfix
@@ -204,7 +204,7 @@ pop_all_stack:
 	add $t5, $t5, 1
 	
 	
-	j pop_all_stack
+	j popallstack
 	nop
 
 endPostfix:
@@ -464,6 +464,7 @@ check_number:
 #-----------------------------------------------------------------
 pop:
 	lw $v0, -4($s2)
+	sw $zero, -4($s2)
 	add $s2, $s2, -4
 	jr $ra
 	nop
