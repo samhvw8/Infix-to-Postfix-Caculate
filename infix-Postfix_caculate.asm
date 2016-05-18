@@ -5,7 +5,7 @@
 infix: .space 256
 postfix: .space 256
 stack: .space 256
-prompt:	.asciiz "Enter String contain infix expression :"
+prompt:	.asciiz "Enter String contain infix expression\n(note) Input expression has number must be integer and positive number:"
 newLine: .asciiz "\n"
 prompt_postfix: .asciiz "Postfix is: "
 prompt_result: .asciiz "Result is: "
